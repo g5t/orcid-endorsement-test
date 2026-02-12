@@ -1,0 +1,98 @@
+# Site Settings
+lang: en
+timezone: UTC
+
+# Site Information
+title: ORCiD Endorsement Test
+tagline: Testing ORCiD-based proposal endorsements
+description: >-
+  A test environment for implementing ORCiD-based endorsement systems
+  for scientific proposals and community validation.
+
+# GitHub Pages
+url: "https://g5t.github.io"
+baseurl: "/orcid-endorsement-test"
+
+github:
+  username: g5t
+
+social:
+  name: ORCiD Endorsement Test
+  links:
+    - https://github.com/g5t/orcid-endorsement-test
+
+# Theme
+theme: jekyll-theme-chirpy
+
+# Pagination
+paginate: 10
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+
+kramdown:
+  syntax_highlighter: rouge
+  syntax_highlighter_opts:
+    css_class: highlight
+    span:
+      line_numbers: false
+    block:
+      line_numbers: true
+      start_line: 1
+
+# Collections
+collections:
+  tabs:
+    output: true
+    sort_by: order
+
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post
+      comments: true
+      toc: true
+      permalink: /posts/:title/
+  - scope:
+      path: _drafts
+    values:
+      comments: false
+  - scope:
+      path: ""
+      type: tabs
+    values:
+      layout: page
+      permalink: /:title/
+
+exclude:
+  - "*.gem"
+  - "*.gemspec"
+  - tools
+  - README.md
+  - CHANGELOG.md
+  - LICENSE
+  - rollup.config.js
+  - node_modules
+  - package*.json
+  - cloudflare-worker
+
+sass:
+  style: compressed
+
+# jekyll-seo-tag settings
+twitter:
+  username: 
+  card: summary
+
+# jekyll-archives
+jekyll-archives:
+  enabled: [categories, tags]
+  layouts:
+    category: category
+    tag: tag
+  permalinks:
+    tag: /tags/:name/
+    category: /categories/:name/
