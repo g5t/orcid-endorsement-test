@@ -4,7 +4,7 @@ title: Endorse Proposal
 permalink: /endorsement/
 ---
 
-<link rel="stylesheet" href="/assets/css/endorsement.css">
+<link rel="stylesheet" href="{{ '/assets/css/endorsement.css' | relative_url }}">
 
 <div class="endorsement-container">
   <h1>Endorse This Proposal</h1>
@@ -46,9 +46,9 @@ permalink: /endorsement/
     </form>
     
     <div style="margin-top: 20px;">
-      <a href="/my-endorsements/">View all my endorsements</a>
+      <a href="{{ '/my-endorsements/' | relative_url }}">View all my endorsements</a>
     </div>
   </div>
 </div>
 
-<script src="/assets/js/endorsement.js"></script>
+<script src="{{ '/assets/js/endorsement.js' | relative_url }}"></script>

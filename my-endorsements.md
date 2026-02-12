@@ -4,7 +4,7 @@ title: My Endorsements
 permalink: /my-endorsements/
 ---
 
-<link rel="stylesheet" href="/assets/css/endorsement.css">
+<link rel="stylesheet" href="{{ '/assets/css/endorsement.css' | relative_url }}">
 
 <div class="endorsement-container">
   <h1>My Endorsements</h1>
@@ -29,9 +29,9 @@ permalink: /my-endorsements/
     <div id="endorsements-list"></div>
     
     <div style="margin-top: 20px;">
-      <a href="/posts/">← Browse proposals</a>
+      <a href="{{ '/posts/' | relative_url }}">← Browse proposals</a>
     </div>
   </div>
 </div>
 
-<script src="/assets/js/my-endorsements.js"></script>
+<script src="{{ '/assets/js/my-endorsements.js' | relative_url }}"></script>

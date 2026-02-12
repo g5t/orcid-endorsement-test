@@ -13,7 +13,7 @@ title: Home
   <div style="background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; padding: 20px; margin: 30px 0;">
     <h2>How It Works</h2>
     <ol>
-      <li><strong>Browse Proposals</strong> - Explore scientific proposals in our <a href="/posts/">blog</a></li>
+      <li><strong>Browse Proposals</strong> - Explore scientific proposals in our <a href="{{ '/posts/' | relative_url }}">blog</a></li>
       <li><strong>Sign In with ORCiD</strong> - Authenticate using your ORCiD credentials</li>
       <li><strong>Endorse Proposals</strong> - Show your support for proposals you believe in</li>
       <li><strong>Manage Endorsements</strong> - View and update your endorsements anytime</li>
@@ -24,20 +24,20 @@ title: Home
     <h2>Current Proposals</h2>
     
     <div style="border: 1px solid #dee2e6; border-radius: 8px; padding: 20px; margin: 20px 0;">
-      <h3><a href="/posts/neutron-scattering-proposal/">Advanced Neutron Scattering Instrument</a></h3>
+      <h3><a href="{{ '/posts/neutron-scattering-proposal/' | relative_url }}">Advanced Neutron Scattering Instrument</a></h3>
       <p>A next-generation neutron scattering instrument for groundbreaking research in materials science and physics.</p>
       <p>
-        <a href="/posts/neutron-scattering-proposal/" class="btn btn-primary">Read More</a>
-        <a href="/endorsement/?proposal=neutron-instrument-2026" class="btn btn-primary">Endorse</a>
+        <a href="{{ '/posts/neutron-scattering-proposal/' | relative_url }}" class="btn btn-primary">Read More</a>
+        <a href="{{ '/endorsement/?proposal=neutron-instrument-2026' | relative_url }}" class="btn btn-primary">Endorse</a>
       </p>
     </div>
     
     <div style="border: 1px solid #dee2e6; border-radius: 8px; padding: 20px; margin: 20px 0;">
-      <h3><a href="/posts/another-proposal/">Open Data Standards for Neutron Scattering</a></h3>
+      <h3><a href="{{ '/posts/another-proposal/' | relative_url }}">Open Data Standards for Neutron Scattering</a></h3>
       <p>Universal open data standards to enhance reproducibility and enable data sharing across facilities.</p>
       <p>
-        <a href="/posts/another-proposal/" class="btn btn-primary">Read More</a>
-        <a href="/endorsement/?proposal=open-data-standards-2026" class="btn btn-primary">Endorse</a>
+        <a href="{{ '/posts/another-proposal/' | relative_url }}" class="btn btn-primary">Read More</a>
+        <a href="{{ '/endorsement/?proposal=open-data-standards-2026' | relative_url }}" class="btn btn-primary">Endorse</a>
       </p>
     </div>
   </div>
@@ -46,7 +46,7 @@ title: Home
     <h3>Your Endorsements</h3>
     <p>Already endorsed some proposals? View and manage all your endorsements:</p>
     <p>
-      <a href="/my-endorsements/" class="btn btn-primary">My Endorsements</a>
+      <a href="{{ '/my-endorsements/' | relative_url }}" class="btn btn-primary">My Endorsements</a>
     </p>
   </div>
   
@@ -90,4 +90,4 @@ title: Home
   </div>
 </div>
 
-<link rel="stylesheet" href="/assets/css/endorsement.css">
+<link rel="stylesheet" href="{{ '/assets/css/endorsement.css' | relative_url }}">
