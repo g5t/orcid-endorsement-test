@@ -1,0 +1,16 @@
+# Contact information for the Chirpy theme
+# This data is used in the sidebar and contact page
+
+- type: github
+  icon: 'fab fa-github'
+
+- type: email
+  icon: 'fas fa-envelope'
+  noblank: true
+
+# - type: twitter
+#   icon: 'fab fa-twitter'
+
+# - type: rss
+#   icon: 'fas fa-rss'
+#   noblank: true
