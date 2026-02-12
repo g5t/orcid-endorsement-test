@@ -5,8 +5,8 @@ description: >-
   A Jekyll-based site demonstrating how to collect endorsements for scientific
   proposals using ORCiD authentication and Cloudflare Workers.
 
-url: "https://g5t.github.io/orcid-endorsement-test"
-baseurl: ""
+url: "https://g5t.github.io"
+baseurl: "/orcid-endorsement-test"
 
 github:
   username: g5t
