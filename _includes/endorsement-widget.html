@@ -1,0 +1,39 @@
+<!-- Endorsement Widget Include -->
+<!-- Usage: {% include endorsement-widget.html proposal_id=page.proposal_id %} -->
+
+<link rel="stylesheet" href="/assets/css/endorsement.css">
+
+<div class="endorsement-widget">
+  <h3>Community Endorsements</h3>
+  <div id="widget-stats-{{ include.proposal_id }}">
+    <p>Loading endorsement count...</p>
+  </div>
+  <p>
+    <a href="/endorsement/?proposal={{ include.proposal_id }}" class="btn btn-primary">
+      Endorse this Proposal
+    </a>
+  </p>
+</div>
+
+<script>
+(function() {
+  const proposalId = '{{ include.proposal_id }}';
+  const workerUrl = 'https://your-worker.workers.dev'; // Update with your worker URL
+  
+  // Load stats
+  fetch(`${workerUrl}/api/stats?proposal_id=${proposalId}`)
+    .then(response => response.json())
+    .then(data => {
+      const statsDiv = document.getElementById('widget-stats-' + proposalId);
+      if (statsDiv && data.total !== undefined) {
+        statsDiv.innerHTML = `
+          <p class="endorsement-count">${data.total}</p>
+          <p>researcher${data.total !== 1 ? 's' : ''} ${data.total !== 1 ? 'have' : 'has'} endorsed this proposal</p>
+        `;
+      }
+    })
+    .catch(error => {
+      console.error('Failed to load endorsement count:', error);
+    });
+})();
+</script>

@@ -1,0 +1,67 @@
+# Site settings
+title: ORCiD Endorsement System
+tagline: A demonstration of proposal endorsement with ORCiD authentication
+description: >-
+  A Jekyll-based site demonstrating how to collect endorsements for scientific
+  proposals using ORCiD authentication and Cloudflare Workers.
+
+url: ""
+baseurl: ""
+
+# Theme
+theme: jekyll-theme-chirpy
+
+# Author
+author:
+  name: ORCiD Endorsement Team
+  email: ""
+
+# Social
+social:
+  name: ORCiD Endorsement
+  links: []
+
+# Build settings
+markdown: kramdown
+permalink: /posts/:title/
+timezone: UTC
+
+# Collections
+collections:
+  posts:
+    output: true
+    permalink: /posts/:title/
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post
+      comments: false
+      toc: true
+      permalink: /posts/:title/
+
+# Pagination
+paginate: 10
+
+# Plugins
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-sitemap
+  - jekyll-paginate
+
+# Exclude
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor
+  - .bundle
+  - .sass-cache
+  - .jekyll-cache
+  - cloudflare-worker
+  - README.md
+  - SETUP.md

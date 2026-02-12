@@ -1,0 +1,12 @@
+name = "orcid-endorsement-worker"
+main = "worker.js"
+compatibility_date = "2024-01-01"
+
+[env.production]
+kv_namespaces = [
+  { binding = "ENDORSEMENT_KV", id = "your-kv-namespace-id" }
+]
+
+[env.production.vars]
+ORCID_CLIENT_ID = "your-orcid-client-id"
+ORCID_CLIENT_SECRET = "your-orcid-client-secret"
