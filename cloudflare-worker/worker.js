@@ -64,7 +64,7 @@ export default {
  */
 async function handleOAuthStart(request, env) {
   try {
-    const { redirect_uri } = await request.json();
+    const { redirect_uri, state } = await request.json();
     
     const params = new URLSearchParams({
       client_id: env.ORCID_CLIENT_ID,
@@ -72,6 +72,11 @@ async function handleOAuthStart(request, env) {
       scope: '/authenticate',
       redirect_uri: redirect_uri,
     });
+
+    // Include state parameter if provided
+    if (state) {
+      params.set('state', state);
+    }
 
     const authUrl = `${ORCID_AUTH_URL}?${params}`;
 

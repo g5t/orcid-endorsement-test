@@ -19,30 +19,41 @@ let userName = null;
 document.addEventListener('DOMContentLoaded', () => {
   // Extract proposal_id from URL
   const urlParams = new URLSearchParams(window.location.search);
-  proposalId = urlParams.get('proposal');
-
-  if (!proposalId) {
-    showError('No proposal specified. Please access this page from a proposal post.');
-    return;
-  }
-
-  // Store in sessionStorage for OAuth flow
-  sessionStorage.setItem('proposal_id', proposalId);
-
-  // Display proposal info
-  displayProposalInfo();
-
-  // Check for OAuth callback
+  
+  // Check for OAuth callback first
   const code = urlParams.get('code');
-  if (code) {
+  const state = urlParams.get('state');
+  
+  if (code && state) {
+    // Restore proposal_id from state parameter
+    proposalId = state;
+    sessionStorage.setItem('proposal_id', proposalId);
     handleOAuthCallback(code);
   } else {
+    // Normal page load - get proposal from URL
+    proposalId = urlParams.get('proposal');
+    
+    if (!proposalId) {
+      // Try to get from sessionStorage as fallback
+      proposalId = sessionStorage.getItem('proposal_id');
+      if (!proposalId) {
+        showError('No proposal specified. Please access this page from a proposal post.');
+        return;
+      }
+    }
+    
+    // Store in sessionStorage for OAuth flow
+    sessionStorage.setItem('proposal_id', proposalId);
+    
     // Check if already authenticated
     sessionToken = sessionStorage.getItem('sessionToken');
     if (sessionToken) {
       showEndorsementForm();
     }
   }
+
+  // Display proposal info
+  displayProposalInfo();
 
   // Load and display stats
   loadStats();
@@ -86,7 +97,10 @@ async function startOAuth() {
     const response = await fetch(`${WORKER_URL}/api/oauth/start`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ redirect_uri: REDIRECT_URI }),
+      body: JSON.stringify({ 
+        redirect_uri: REDIRECT_URI,
+        state: proposalId  // Pass proposal_id as state parameter
+      }),
     });
 
     const data = await response.json();
