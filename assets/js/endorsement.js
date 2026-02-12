@@ -5,7 +5,7 @@
 
 // Configuration
 const WORKER_URL = 'https://orcid-endorsement-worker-production.excitations-org.workers.dev'; // Update with your worker URL
-const REDIRECT_URI = window.location.origin + '/endorsement/';
+const REDIRECT_URI = window.location.origin + window.location.pathname;
 
 // State management
 let sessionToken = null;
@@ -224,7 +224,7 @@ async function submitEndorsement(event) {
 
     const data = await response.json();
     if (data.success) {
-      showSuccess(data.message + '! <a href="/my-endorsements/">View all your endorsements</a>');
+      showSuccess(data.message + '! <a href="' + window.location.origin + window.location.pathname.replace(/endorsement\/$/, 'my-endorsements/') + '">View all your endorsements</a>');
       loadStats();
       
       // Show remove button

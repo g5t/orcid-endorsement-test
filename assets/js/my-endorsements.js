@@ -5,7 +5,7 @@
 
 // Configuration
 const WORKER_URL = 'https://orcid-endorsement-worker-production.excitations-org.workers.dev'; // Update with your worker URL
-const REDIRECT_URI = window.location.origin + '/my-endorsements/';
+const REDIRECT_URI = window.location.origin + window.location.pathname;
 
 // State
 let sessionToken = null;
@@ -143,10 +143,11 @@ function displayEndorsements(endorsements) {
   if (!container) return;
 
   if (endorsements.length === 0) {
+    const basePath = window.location.pathname.replace(/my-endorsements\/$/, 'posts/');
     container.innerHTML = `
       <div class="alert alert-info">
         <p>You haven't endorsed any proposals yet.</p>
-        <p><a href="/posts/">Browse proposals</a> to get started.</p>
+        <p><a href="${basePath}">Browse proposals</a> to get started.</p>
       </div>
     `;
     if (messageDiv) messageDiv.innerHTML = '';
@@ -173,7 +174,8 @@ function displayEndorsements(endorsements) {
 
   endorsements.forEach(endorsement => {
     const proposalTitle = formatProposalId(endorsement.proposal_id);
-    const proposalLink = `/posts/${endorsement.proposal_id}/`;
+    const basePath = window.location.pathname.replace(/my-endorsements\/$/, '');
+    const proposalLink = `${basePath}posts/${endorsement.proposal_id}/`;
     const date = new Date(endorsement.timestamp).toLocaleDateString();
     
     html += `
