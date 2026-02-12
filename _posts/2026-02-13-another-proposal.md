@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Proposal: Open Data Standards for Neutron Scattering"
-date: 2026-02-13 10:00:00 +0000
+date: 2026-02-12 11:00:00 +0000
 categories: proposals data-standards
 proposal_id: open-data-standards-2026
 ---
@@ -130,10 +130,4 @@ Your endorsement helps demonstrate community support for this initiative to fund
 
 If you support open data standards for neutron scattering, please endorse this proposal:
 
-<div style="text-align: center; margin: 30px 0;">
-  <a href="/endorsement/?proposal=open-data-standards-2026" class="btn btn-primary" style="font-size: 1.2em; padding: 15px 30px;">
-    Endorse This Proposal
-  </a>
-</div>
-
-{% include endorsement-widget.html proposal_id=page.proposal_id %}
+{% include endorsement-widget.html %}

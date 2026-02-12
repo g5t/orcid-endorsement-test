@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 
 gem "jekyll", "~> 4.3"
-gem "jekyll-theme-chirpy", "~> 6.0"
+gem "jekyll-theme-chirpy", "~> 6.5"
 
 group :jekyll_plugins do
   gem "jekyll-feed", "~> 0.12"
@@ -17,3 +17,5 @@ platforms :mingw, :x64_mingw, :mswin, :jruby do
 end
 
 gem "wdm", "~> 0.1", :platforms => [:mingw, :x64_mingw, :mswin]
+
+gem "http_parser.rb", "~> 0.6.0", :platforms => [:jruby]
