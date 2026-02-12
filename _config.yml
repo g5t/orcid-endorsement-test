@@ -8,6 +8,9 @@ description: >-
 url: "https://g5t.github.io"
 baseurl: "/orcid-endorsement-test"
 
+github:
+  username: g5t
+
 # Theme
 theme: jekyll-theme-chirpy
 
@@ -23,8 +26,20 @@ social:
 
 # Build settings
 markdown: kramdown
+highlighter: rouge
 permalink: /posts/:title/
 timezone: UTC
+
+kramdown:
+  syntax_highlighter: rouge
+  syntax_highlighter_opts:
+    css_class: highlight
+    span:
+      line_numbers: false
+    block:
+      line_numbers: true
+      start_line: 1
+
 
 # Collections
 collections:
@@ -55,6 +70,8 @@ plugins:
 
 # Exclude
 exclude:
+  - "*.gem"
+  - "*.gemspec"
   - Gemfile
   - Gemfile.lock
   - node_modules
@@ -65,3 +82,8 @@ exclude:
   - cloudflare-worker
   - README.md
   - SETUP.md
+  - CHANGELOG.md
+  - LICENSE
+
+sass:
+  style: compressed
