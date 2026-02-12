@@ -1,12 +1,11 @@
 <!-- Endorsement Widget -->
-{% assign prop_id = page.proposal_id | default: include.proposal_id %}
 <div class="endorsement-widget">
   <h3>Community Endorsements</h3>
-  <div id="widget-stats-{{ prop_id }}">
+  <div id="widget-stats">
     <p>Loading endorsement count...</p>
   </div>
   <p>
-    <a href="/endorsement/?proposal={{ prop_id }}" class="btn btn-primary">
+    <a href="/endorsement/" class="btn btn-primary">
       Endorse this Proposal
     </a>
   </p>
@@ -14,13 +13,13 @@
 
 <script>
 (function() {
-  const proposalId = '{{ prop_id }}';
+  const proposalId = 'neutron-instrument-2026';
   const workerUrl = 'https://orcid-endorsement-worker-production.excitations-org.workers.dev';
   
   fetch(`${workerUrl}/api/stats?proposal_id=${proposalId}`)
     .then(response => response.json())
     .then(data => {
-      const statsDiv = document.getElementById('widget-stats-' + proposalId);
+      const statsDiv = document.getElementById('widget-stats');
       if (statsDiv && data.total !== undefined) {
         statsDiv.innerHTML = `
           <p class="endorsement-count">${data.total}</p>

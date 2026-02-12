@@ -4,7 +4,7 @@
  */
 
 // Configuration
-const WORKER_URL = 'https://your-worker.workers.dev'; // Update with your worker URL
+const WORKER_URL = 'https://orcid-endorsement-worker-production.excitations-org.workers.dev'; // Update with your worker URL
 const REDIRECT_URI = window.location.origin + '/my-endorsements/';
 
 // State

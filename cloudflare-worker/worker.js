@@ -9,10 +9,10 @@
  * - session:{token} - Session data with ORCiD info
  */
 
-// ORCiD OAuth Configuration
-const ORCID_AUTH_URL = 'https://orcid.org/oauth/authorize';
-const ORCID_TOKEN_URL = 'https://orcid.org/oauth/token';
-const ORCID_API_URL = 'https://pub.orcid.org/v3.0';
+// ORCiD OAuth Configuration (Sandbox)
+const ORCID_AUTH_URL = 'https://sandbox.orcid.org/oauth/authorize';
+const ORCID_TOKEN_URL = 'https://sandbox.orcid.org/oauth/token';
+const ORCID_API_URL = 'https://pub.sandbox.orcid.org/v3.0';
 
 // CORS headers
 const CORS_HEADERS = {
@@ -24,6 +24,14 @@ const CORS_HEADERS = {
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+
+    // Validate KV binding exists
+    if (!env.ENDORSEMENT_KV) {
+      return new Response(JSON.stringify({ error: 'KV namespace not configured' }), {
+        status: 500,
+        headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
+      });
+    }
 
     // Handle CORS preflight
     if (request.method === 'OPTIONS') {

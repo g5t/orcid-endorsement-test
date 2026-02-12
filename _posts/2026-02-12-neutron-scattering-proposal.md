@@ -91,4 +91,4 @@ If you support this proposal and would like to endorse it with your ORCiD creden
   </a>
 </div>
 
-{% include endorsement-widget.html proposal_id=page.proposal_id %}
+{% include endorsement-widget.html %}
