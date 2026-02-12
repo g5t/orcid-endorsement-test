@@ -32,13 +32,13 @@ permalink: /endorsement/
     
     <form id="endorse-form">
       <div class="form-group">
-        <label for="job-title">Job Title (optional):</label>
-        <input type="text" id="job-title" class="form-control" placeholder="e.g., Research Scientist">
+        <label for="job-title">Job Title <span style="color: red;">*</span>:</label>
+        <input type="text" id="job-title" class="form-control" placeholder="e.g., Research Scientist" required>
       </div>
       
       <div class="form-group">
-        <label for="employer">Employer/Institution (optional):</label>
-        <input type="text" id="employer" class="form-control" placeholder="e.g., Example University">
+        <label for="employer">Employer/Institution <span style="color: red;">*</span>:</label>
+        <input type="text" id="employer" class="form-control" placeholder="e.g., Example University" required>
       </div>
       
       <button type="submit" class="btn btn-primary">Submit Endorsement</button>

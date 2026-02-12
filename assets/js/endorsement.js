@@ -139,6 +139,14 @@ async function handleOAuthCallback(code) {
       sessionStorage.setItem('sessionToken', sessionToken);
       sessionStorage.setItem('userOrcid', userOrcid);
       sessionStorage.setItem('userName', userName);
+      
+      // Store employment data if available
+      if (data.jobTitle) {
+        sessionStorage.setItem('userJobTitle', data.jobTitle);
+      }
+      if (data.employer) {
+        sessionStorage.setItem('userEmployer', data.employer);
+      }
 
       // Clean up URL
       window.history.replaceState({}, document.title, window.location.pathname + '?proposal=' + proposalId);
@@ -190,7 +198,7 @@ async function checkExistingEndorsement() {
     if (data.endorsements) {
       const existing = data.endorsements.find(e => e.proposal_id === proposalId);
       if (existing) {
-        // Pre-fill form with existing data
+        // Pre-fill form with existing endorsement data
         document.getElementById('job-title').value = existing.jobTitle || '';
         document.getElementById('employer').value = existing.employer || '';
 
@@ -201,10 +209,32 @@ async function checkExistingEndorsement() {
         }
 
         showInfo('You have already endorsed this proposal. You can update your endorsement or remove it.');
+      } else {
+        // No existing endorsement - pre-fill with ORCID profile data
+        const orcidJobTitle = sessionStorage.getItem('userJobTitle');
+        const orcidEmployer = sessionStorage.getItem('userEmployer');
+        
+        if (orcidJobTitle) {
+          document.getElementById('job-title').value = orcidJobTitle;
+        }
+        if (orcidEmployer) {
+          document.getElementById('employer').value = orcidEmployer;
+        }
       }
     }
   } catch (error) {
     console.error('Failed to check existing endorsement:', error);
+    
+    // Even if check fails, try to pre-fill with ORCID data
+    const orcidJobTitle = sessionStorage.getItem('userJobTitle');
+    const orcidEmployer = sessionStorage.getItem('userEmployer');
+    
+    if (orcidJobTitle) {
+      document.getElementById('job-title').value = orcidJobTitle;
+    }
+    if (orcidEmployer) {
+      document.getElementById('employer').value = orcidEmployer;
+    }
   }
 }
 
@@ -214,11 +244,17 @@ async function checkExistingEndorsement() {
 async function submitEndorsement(event) {
   event.preventDefault();
 
-  const jobTitle = document.getElementById('job-title').value;
-  const employer = document.getElementById('employer').value;
+  const jobTitle = document.getElementById('job-title').value.trim();
+  const employer = document.getElementById('employer').value.trim();
 
   if (!sessionToken) {
     showError('Please sign in first');
+    return;
+  }
+
+  // Validate required fields
+  if (!jobTitle || !employer) {
+    showError('Job title and employer/institution are required fields');
     return;
   }
 

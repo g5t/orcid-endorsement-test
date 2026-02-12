@@ -122,11 +122,45 @@ async function handleOAuthCallback(request, env) {
     const orcid = tokenData.orcid;
     const name = tokenData.name;
 
+    // Fetch employment information from ORCID public API
+    let jobTitle = null;
+    let employer = null;
+    
+    try {
+      const profileResponse = await fetch(`${ORCID_API_URL}/${orcid}/employments`, {
+        headers: {
+          'Accept': 'application/json',
+        },
+      });
+      
+      if (profileResponse.ok) {
+        const profileData = await profileResponse.json();
+        
+        // Get the most recent employment
+        if (profileData['employment-summary'] && profileData['employment-summary'].length > 0) {
+          const employment = profileData['employment-summary'][0];
+          
+          if (employment['role-title']) {
+            jobTitle = employment['role-title'];
+          }
+          
+          if (employment['organization'] && employment['organization']['name']) {
+            employer = employment['organization']['name'];
+          }
+        }
+      }
+    } catch (error) {
+      // Employment data is optional, don't fail if we can't fetch it
+      console.error('Failed to fetch employment data:', error);
+    }
+
     // Create session
     const sessionToken = crypto.randomUUID();
     const sessionData = {
       orcid,
       name,
+      jobTitle,
+      employer,
       createdAt: Date.now(),
     };
 
@@ -137,7 +171,7 @@ async function handleOAuthCallback(request, env) {
       { expirationTtl: 600 }
     );
 
-    return new Response(JSON.stringify({ sessionToken, orcid, name }), {
+    return new Response(JSON.stringify({ sessionToken, orcid, name, jobTitle, employer }), {
       headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
     });
   } catch (error) {
