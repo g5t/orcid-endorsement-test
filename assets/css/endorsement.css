@@ -92,10 +92,15 @@
 }
 
 .btn-sm {
+  color: var(--prompt-text-color);
   padding: 0.25rem 0.5rem;
   font-size: 0.875rem;
   line-height: 1.5;
   border-radius: 0.2rem;
+}
+.btn-sm:hover {
+  color: var(--highlighter-rouge-color);
+  background-color: var(--highlight-bg-color);
 }
 
 .form-group {
