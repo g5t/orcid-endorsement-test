@@ -34,4 +34,5 @@ icon: fa-solid fa-person-circle-check
   </div>
 </div>
 
+<script src="{{ '/assets/js/utilities.js' | relative_url }}"></script>
 <script src="{{ '/assets/js/my-endorsements.js' | relative_url }}"></script>

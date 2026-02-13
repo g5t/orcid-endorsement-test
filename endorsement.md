@@ -49,4 +49,5 @@ permalink: /endorsement/
   </div>
 </div>
 
+<script src="{{ '/assets/js/utilities.js' | relative_url }}"></script>
 <script src="{{ '/assets/js/endorsement.js' | relative_url }}"></script>

@@ -1,11 +1,7 @@
 /**
  * ORCiD Endorsement System - Frontend JavaScript
- * Handles OAuth flow, endorsement submission, and stats display
+ * Handles endorsement submission and stats display
  */
-
-// Configuration
-const WORKER_URL = 'https://orcid-endorsement-worker-production.excitations-org.workers.dev'; // Update with your worker URL
-const REDIRECT_URI = window.location.origin + window.location.pathname;
 
 // State management
 let sessionToken = null;
@@ -28,7 +24,16 @@ document.addEventListener('DOMContentLoaded', () => {
     // Restore proposal_id from state parameter
     proposalId = state;
     sessionStorage.setItem('proposal_id', proposalId);
-    handleOAuthCallback(code);
+    handleOAuthCallback(code, (data) => {
+      sessionToken = data.sessionToken;
+      userOrcid = data.orcid;
+      userName = data.name;
+
+      // Clean up URL
+      window.history.replaceState({}, document.title, window.location.pathname + '?proposal=' + proposalId);
+
+      showEndorsementForm();
+    });
   } else {
     // Normal page load - get proposal from URL
     proposalId = urlParams.get('proposal');
@@ -48,7 +53,16 @@ document.addEventListener('DOMContentLoaded', () => {
     // Check if already authenticated
     sessionToken = sessionStorage.getItem('sessionToken');
     if (sessionToken) {
-      showEndorsementForm();
+      // Validate session is still valid
+      validateSession().then(isValid => {
+        if (isValid) {
+          showEndorsementForm();
+        } else {
+          // Session expired, clear and show login
+          sessionStorage.clear();
+          sessionToken = null;
+        }
+      });
     }
   }
 
@@ -59,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
   loadStats();
 
   // Set up event listeners
-  document.getElementById('sign-in-btn')?.addEventListener('click', startOAuth);
+  document.getElementById('sign-in-btn')?.addEventListener('click', () => startOAuth(proposalId));
   document.getElementById('endorse-form')?.addEventListener('submit', submitEndorsement);
   document.getElementById('remove-btn')?.addEventListener('click', removeEndorsement);
 });
@@ -75,88 +89,6 @@ function displayProposalInfo() {
         <strong>Proposal:</strong> ${formatProposalId(proposalId)}
       </div>
     `;
-  }
-}
-
-/**
- * Format proposal_id for display
- */
-function formatProposalId(id) {
-  return id.split('-').map(word => 
-    word.charAt(0).toUpperCase() + word.slice(1)
-  ).join(' ');
-}
-
-/**
- * Start OAuth flow
- */
-async function startOAuth() {
-  try {
-    showLoading('Starting authentication...');
-
-    const response = await fetch(`${WORKER_URL}/api/oauth/start`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ 
-        redirect_uri: REDIRECT_URI,
-        state: proposalId  // Pass proposal_id as state parameter
-      }),
-    });
-
-    const data = await response.json();
-    if (data.authUrl) {
-      window.location.href = data.authUrl;
-    } else {
-      throw new Error('Failed to get authorization URL');
-    }
-  } catch (error) {
-    showError('Authentication failed: ' + error.message);
-  }
-}
-
-/**
- * Handle OAuth callback
- */
-async function handleOAuthCallback(code) {
-  try {
-    showLoading('Completing authentication...');
-
-    const response = await fetch(`${WORKER_URL}/api/oauth/callback`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        code: code,
-        redirect_uri: REDIRECT_URI,
-      }),
-    });
-
-    const data = await response.json();
-    if (data.sessionToken) {
-      sessionToken = data.sessionToken;
-      userOrcid = data.orcid;
-      userName = data.name;
-
-      sessionStorage.setItem('sessionToken', sessionToken);
-      sessionStorage.setItem('userOrcid', userOrcid);
-      sessionStorage.setItem('userName', userName);
-      
-      // Store employment data if available
-      if (data.jobTitle) {
-        sessionStorage.setItem('userJobTitle', data.jobTitle);
-      }
-      if (data.employer) {
-        sessionStorage.setItem('userEmployer', data.employer);
-      }
-
-      // Clean up URL
-      window.history.replaceState({}, document.title, window.location.pathname + '?proposal=' + proposalId);
-
-      showEndorsementForm();
-    } else {
-      throw new Error(data.error || 'Authentication failed');
-    }
-  } catch (error) {
-    showError('Authentication failed: ' + error.message);
   }
 }
 
@@ -379,40 +311,17 @@ async function loadStats() {
 }
 
 /**
- * UI Helper Functions
+ * Validate if session is still valid
  */
-function showLoading(message) {
-  const messageDiv = document.getElementById('message');
-  if (messageDiv) {
-    messageDiv.innerHTML = `<div class="alert alert-info">${message}</div>`;
+async function validateSession() {
+  try {
+    const response = await fetch(`${WORKER_URL}/api/my-endorsements?sessionToken=${sessionToken}`);
+    if (response.status === 401 || !response.ok) {
+      return false;
+    }
+    return true;
+  } catch (error) {
+    console.error('Session validation failed:', error);
+    return false;
   }
-}
-
-function showSuccess(message) {
-  const messageDiv = document.getElementById('message');
-  if (messageDiv) {
-    messageDiv.innerHTML = `<div class="alert alert-success">${message}</div>`;
-  }
-}
-
-function showError(message) {
-  const messageDiv = document.getElementById('message');
-  if (messageDiv) {
-    messageDiv.innerHTML = `<div class="alert alert-danger">${message}</div>`;
-  }
-}
-
-function showInfo(message) {
-  const messageDiv = document.getElementById('message');
-  if (messageDiv) {
-    messageDiv.innerHTML = `<div class="alert alert-info">${message}</div>`;
-  }
-}
-
-/**
- * Logout - clear session and reload page
- */
-function logout() {
-  sessionStorage.clear();
-  window.location.reload();
 }

@@ -3,10 +3,6 @@
  * Displays and manages user's endorsements
  */
 
-// Configuration
-const WORKER_URL = 'https://orcid-endorsement-worker-production.excitations-org.workers.dev'; // Update with your worker URL
-const REDIRECT_URI = window.location.origin + window.location.pathname;
-
 // State
 let sessionToken = null;
 let userOrcid = null;
@@ -21,80 +17,37 @@ document.addEventListener('DOMContentLoaded', () => {
   const code = urlParams.get('code');
   
   if (code) {
-    handleOAuthCallback(code);
-  } else {
-    // Check if already authenticated
-    sessionToken = sessionStorage.getItem('sessionToken');
-    if (sessionToken) {
-      loadEndorsements();
-    }
-  }
-
-  // Set up event listeners
-  document.getElementById('sign-in-btn')?.addEventListener('click', startOAuth);
-});
-
-/**
- * Start OAuth flow
- */
-async function startOAuth() {
-  try {
-    showLoading('Starting authentication...');
-
-    const response = await fetch(`${WORKER_URL}/api/oauth/start`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ redirect_uri: REDIRECT_URI }),
-    });
-
-    const data = await response.json();
-    if (data.authUrl) {
-      window.location.href = data.authUrl;
-    } else {
-      throw new Error('Failed to get authorization URL');
-    }
-  } catch (error) {
-    showError('Authentication failed: ' + error.message);
-  }
-}
-
-/**
- * Handle OAuth callback
- */
-async function handleOAuthCallback(code) {
-  try {
-    showLoading('Completing authentication...');
-
-    const response = await fetch(`${WORKER_URL}/api/oauth/callback`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        code: code,
-        redirect_uri: REDIRECT_URI,
-      }),
-    });
-
-    const data = await response.json();
-    if (data.sessionToken) {
+    handleOAuthCallback(code, (data) => {
       sessionToken = data.sessionToken;
       userOrcid = data.orcid;
       userName = data.name;
-
-      sessionStorage.setItem('sessionToken', sessionToken);
-      sessionStorage.setItem('userOrcid', userOrcid);
-      sessionStorage.setItem('userName', userName);
 
       // Clean up URL
       window.history.replaceState({}, document.title, window.location.pathname);
 
       loadEndorsements();
-    } else {
-      throw new Error(data.error || 'Authentication failed');
+    });
+  } else {
+    // Check if already authenticated
+    sessionToken = sessionStorage.getItem('sessionToken');
+    if (sessionToken) {
+      // Validate session before loading endorsements
+      validateSession().then(isValid => {
+        if (isValid) {
+          loadEndorsements();
+        } else {
+          // Session expired, clear and show login
+          sessionStorage.clear();
+          sessionToken = null;
+          showError('Your session has expired. Please sign in again.');
+        }
+      });
     }
-  } catch (error) {
-    showError('Authentication failed: ' + error.message);
   }
-}
+
+  // Set up event listeners
+  document.getElementById('sign-in-btn')?.addEventListener('click', () => startOAuth());
+});
 
 /**
  * Load user's endorsements
@@ -245,49 +198,3 @@ async function removeEndorsement(proposal_id) {
 /**
  * Format proposal_id for display
  */
-function formatProposalId(id) {
-  return id.split('-').map(word => 
-    word.charAt(0).toUpperCase() + word.slice(1)
-  ).join(' ');
-}
-
-/**
- * Escape HTML to prevent XSS
- */
-function escapeHtml(text) {
-  const div = document.createElement('div');
-  div.textContent = text;
-  return div.innerHTML;
-}
-
-/**
- * UI Helper Functions
- */
-function showLoading(message) {
-  const messageDiv = document.getElementById('message');
-  if (messageDiv) {
-    messageDiv.innerHTML = `<div class="alert alert-info">${message}</div>`;
-  }
-}
-
-function showSuccess(message) {
-  const messageDiv = document.getElementById('message');
-  if (messageDiv) {
-    messageDiv.innerHTML = `<div class="alert alert-success">${message}</div>`;
-  }
-}
-
-function showError(message) {
-  const messageDiv = document.getElementById('message');
-  if (messageDiv) {
-    messageDiv.innerHTML = `<div class="alert alert-danger">${message}</div>`;
-  }
-}
-
-/**
- * Logout - clear session and reload page
- */
-function logout() {
-  sessionStorage.clear();
-  window.location.reload();
-}
