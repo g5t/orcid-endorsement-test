@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
     sessionToken = sessionStorage.getItem('sessionToken');
     if (sessionToken) {
       // Validate session is still valid
-      validateSession().then(isValid => {
+      validateSession(sessionToken).then(isValid => {
         if (isValid) {
           showEndorsementForm();
         } else {

@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
     sessionToken = sessionStorage.getItem('sessionToken');
     if (sessionToken) {
       // Validate session before loading endorsements
-      validateSession().then(isValid => {
+      validateSession(sessionToken).then(isValid => {
         if (isValid) {
           loadEndorsements();
         } else {
