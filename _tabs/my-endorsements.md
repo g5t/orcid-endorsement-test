@@ -2,13 +2,13 @@
 layout: page
 title: My Endorsements
 permalink: /my-endorsements/
+order: 3
+icon: fa-solid fa-person-circle-check
 ---
 
 <link rel="stylesheet" href="{{ '/assets/css/endorsement.css' | relative_url }}">
 
 <div class="endorsement-container">
-  <h1>My Endorsements</h1>
-  
   <div id="message"></div>
   
   <!-- Authentication Section -->
@@ -29,7 +29,7 @@ permalink: /my-endorsements/
     <div id="endorsements-list"></div>
     
     <div style="margin-top: 20px;">
-      <a href="{{ '/posts/' | relative_url }}">← Browse proposals</a>
+      <a href="{{ '/' | relative_url }}">← Browse proposals</a>
     </div>
   </div>
 </div>

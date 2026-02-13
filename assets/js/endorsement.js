@@ -181,7 +181,7 @@ function showEndorsementForm() {
     userInfo.innerHTML = `
       <p>
         Signed in as: <strong>${userName}</strong> (${userOrcid})
-        <button id="logout-btn" class="btn btn-sm" style="margin-left: 10px;">Logout</button>
+        <button id="logout-btn" class="btn btn-sm" style="margin-left: 10px; color: var(--text-color)">Logout</button>
       </p>
     `;
     
