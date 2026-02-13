@@ -87,7 +87,9 @@ async function handleOAuthCallback(code, onSuccess) {
  */
 async function validateSession(sessionToken) {
   try {
+    console.log('Validating session with token:', sessionToken);
     const response = await fetch(`${WORKER_URL}/api/my-endorsements?sessionToken=${sessionToken}`);
+    console.log('Validation response status:', response.status, 'ok:', response.ok);
     if (response.status === 401 || !response.ok) {
       return false;
     }
