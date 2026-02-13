@@ -60,7 +60,7 @@ collections:
     sort_by: order
   proposals:
     output: true
-    permalink: /proposal/:name/
+    permalink: /proposal/:title/
 
 defaults:
   - scope:
