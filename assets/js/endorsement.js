@@ -204,7 +204,7 @@ async function checkExistingEndorsement() {
     if (data.endorsements) {
       const existing = data.endorsements.find(e => e.proposal_id === proposalId);
       if (existing) {
-        // Pre-fill form with existing endorsement data
+        // Pre-fill form with existing endorsement data for THIS proposal
         document.getElementById('job-title').value = existing.jobTitle || '';
         document.getElementById('employer').value = existing.employer || '';
 
@@ -216,15 +216,27 @@ async function checkExistingEndorsement() {
 
         showInfo('You have already endorsed this proposal. You can update your endorsement or remove it.');
       } else {
-        // No existing endorsement - pre-fill with ORCID profile data
-        const orcidJobTitle = sessionStorage.getItem('userJobTitle');
-        const orcidEmployer = sessionStorage.getItem('userEmployer');
+        // No existing endorsement for this proposal
+        // Try to pre-fill from sessionStorage (ORCID data)
+        let jobTitle = sessionStorage.getItem('userJobTitle');
+        let employer = sessionStorage.getItem('userEmployer');
         
-        if (orcidJobTitle) {
-          document.getElementById('job-title').value = orcidJobTitle;
+        // If not in sessionStorage, try to use data from any other endorsement
+        if ((!jobTitle || !employer) && data.endorsements.length > 0) {
+          const anyEndorsement = data.endorsements[0];
+          if (!jobTitle && anyEndorsement.jobTitle) {
+            jobTitle = anyEndorsement.jobTitle;
+          }
+          if (!employer && anyEndorsement.employer) {
+            employer = anyEndorsement.employer;
+          }
         }
-        if (orcidEmployer) {
-          document.getElementById('employer').value = orcidEmployer;
+        
+        if (jobTitle) {
+          document.getElementById('job-title').value = jobTitle;
+        }
+        if (employer) {
+          document.getElementById('employer').value = employer;
         }
       }
     }

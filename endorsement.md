@@ -7,8 +7,6 @@ permalink: /endorsement/
 <link rel="stylesheet" href="{{ '/assets/css/endorsement.css' | relative_url }}">
 
 <div class="endorsement-container">
-  <h1>Endorse This Proposal</h1>
-  
   <div id="proposal-info"></div>
   
   <div id="stats"></div>
