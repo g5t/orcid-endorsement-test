@@ -29,7 +29,7 @@ icon: fa-solid fa-person-circle-check
     <div id="endorsements-list"></div>
     
     <div style="margin-top: 20px;">
-      <a href="{{ '/' | relative_url }}">← Browse proposals</a>
+      <a href="{{ '/proposals' | relative_url }}">← Browse proposals</a>
     </div>
   </div>
 </div>

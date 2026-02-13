@@ -151,7 +151,7 @@ function displayEndorsements(endorsements) {
   if (!container) return;
 
   if (endorsements.length === 0) {
-    const basePath = window.location.pathname.replace(/my-endorsements\/$/, 'posts/');
+    const basePath = window.location.pathname.replace(/my-endorsements\/$/, 'proposals/');
     container.innerHTML = `
       <div class="alert alert-info">
         <p>You haven't endorsed any proposals yet.</p>
@@ -183,7 +183,7 @@ function displayEndorsements(endorsements) {
   endorsements.forEach(endorsement => {
     const proposalTitle = formatProposalId(endorsement.proposal_id);
     const basePath = window.location.pathname.replace(/my-endorsements\/$/, '');
-    const proposalLink = `${basePath}posts/${endorsement.proposal_id}/`;
+    const proposalLink = `${basePath}proposal/${endorsement.proposal_id}/`;
     const date = new Date(endorsement.timestamp).toLocaleDateString();
     
     html += `

@@ -1,9 +1,10 @@
 ---
 layout: post
-title: "Future Test Post"
-date: 2026-02-15 10:00:00 +0000
+title: "Proposal: Advanced Neutron Scattering Instrument"
+date: 2026-02-12 10:00:00 +0000
 categories: proposals science
-proposal_id: neutron-instrument-2026
+slug: neutron-instrument-2026
+
 ---
 
 ## Executive Summary
@@ -84,11 +85,5 @@ This instrument represents a significant leap forward in neutron scattering capa
 ## Support This Proposal
 
 If you support this proposal and would like to endorse it with your ORCiD credentials, please visit our endorsement page:
-
-<div style="text-align: center; margin: 30px 0;">
-  <a href="/endorsement/?proposal=neutron-instrument-2026" class="btn btn-primary" style="font-size: 1.2em; padding: 15px 30px;">
-    Endorse This Proposal
-  </a>
-</div>
 
 {% include endorsement-widget.html %}

@@ -1,5 +1,5 @@
 <!-- Endorsement Widget -->
-{% assign prop_id = page.proposal_id | default: include.proposal_id %}
+{% assign prop_id = page.url | replace: '/proposal/', '' | replace: '/', ''  %}
 <div class="endorsement-widget">
   <h3>Community Endorsements</h3>
   <div id="widget-stats-{{ prop_id }}">
