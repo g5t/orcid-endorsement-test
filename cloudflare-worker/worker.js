@@ -9,10 +9,10 @@
  * - session:{token} - Session data with ORCiD info
  */
 
-// ORCiD OAuth Configuration (Sandbox)
-const ORCID_AUTH_URL = 'https://sandbox.orcid.org/oauth/authorize';
-const ORCID_TOKEN_URL = 'https://sandbox.orcid.org/oauth/token';
-const ORCID_API_URL = 'https://pub.sandbox.orcid.org/v3.0';
+// ORCiD OAuth Configuration (Production)
+const ORCID_AUTH_URL = 'https://orcid.org/oauth/authorize';
+const ORCID_TOKEN_URL = 'https://orcid.org/oauth/token';
+const ORCID_API_URL = 'https://pub.orcid.org/v3.0';
 
 // CORS headers
 const CORS_HEADERS = {
