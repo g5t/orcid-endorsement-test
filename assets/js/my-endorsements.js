@@ -117,7 +117,15 @@ async function loadEndorsements() {
 
     const userInfo = document.getElementById('user-info');
     if (userInfo && userName) {
-      userInfo.innerHTML = `<p>Signed in as: <strong>${userName}</strong> (${userOrcid})</p>`;
+      userInfo.innerHTML = `
+        <p>
+          Signed in as: <strong>${userName}</strong> (${userOrcid})
+          <button id="logout-btn" class="btn btn-sm" style="margin-left: 10px;">Logout</button>
+        </p>
+      `;
+      
+      // Add logout handler
+      document.getElementById('logout-btn')?.addEventListener('click', logout);
     }
 
     const response = await fetch(`${WORKER_URL}/api/my-endorsements?sessionToken=${sessionToken}`);
@@ -274,4 +282,12 @@ function showError(message) {
   if (messageDiv) {
     messageDiv.innerHTML = `<div class="alert alert-danger">${message}</div>`;
   }
+}
+
+/**
+ * Logout - clear session and reload page
+ */
+function logout() {
+  sessionStorage.clear();
+  window.location.reload();
 }

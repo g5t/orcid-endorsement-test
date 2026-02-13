@@ -136,22 +136,37 @@ async function handleOAuthCallback(request, env) {
       if (profileResponse.ok) {
         const profileData = await profileResponse.json();
         
-        // Get the most recent employment
-        if (profileData['employment-summary'] && profileData['employment-summary'].length > 0) {
-          const employment = profileData['employment-summary'][0];
+        // ORCID v3.0 structure: affiliation-group[0].summaries[0]['employment-summary']
+        if (profileData['affiliation-group'] && profileData['affiliation-group'].length > 0) {
+          const group = profileData['affiliation-group'][0];
           
-          if (employment['role-title']) {
-            jobTitle = employment['role-title'];
-          }
-          
-          if (employment['organization'] && employment['organization']['name']) {
-            employer = employment['organization']['name'];
+          if (group.summaries && group.summaries.length > 0) {
+            const summary = group.summaries[0];
+            
+            // The actual employment data is nested inside employment-summary
+            const employment = summary['employment-summary'];
+            
+            if (employment) {
+              // Role title
+              if (employment['role-title']) {
+                jobTitle = employment['role-title'];
+              }
+              
+              // Organization name
+              if (employment.organization && employment.organization.name) {
+                employer = employment.organization.name;
+              }
+              
+              console.log('Extracted employment:', { jobTitle, employer });
+            }
           }
         }
+      } else {
+        console.error('Failed to fetch employment data:', profileResponse.status, await profileResponse.text());
       }
     } catch (error) {
       // Employment data is optional, don't fail if we can't fetch it
-      console.error('Failed to fetch employment data:', error);
+      console.error('Failed to fetch employment data:', error.message);
     }
 
     // Create session
