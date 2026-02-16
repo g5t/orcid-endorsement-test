@@ -74,8 +74,9 @@
       <span class="endorsement-count-badge" id="count-{{ prop_id }}">
         <i class="fas fa-users fa-fw"></i>
         <span class="count-number">...</span>
+        <span class="endorsement-label" id="label-{{ prop_id }}">endorsements</span>
       </span>
-      <span class="endorsement-label">endorsements</span>
+
     </div>
     <div class="endorsement-actions">
       <a href="{{ '/endorsement/' | relative_url }}?proposal={{ prop_id }}" 
@@ -99,6 +100,10 @@
       const countElement = document.querySelector('#count-' + proposalId + ' .count-number');
       if (countElement && data.total !== undefined) {
         countElement.textContent = data.total;
+      }
+      const endorsementLabelElement = document.querySelector('#label-' + proposalId);
+      if (endorsementLabelElement && data.total !== undefined) {
+        endorsementLabelElement.textContent = `endorsement${data.total != 1 ? "s" : ""}`;
       }
     })
     .catch(error => {
