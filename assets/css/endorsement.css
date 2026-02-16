@@ -4,11 +4,12 @@
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
+  color: var(--text-color, #212529);
 }
 
 .stats-box {
-  background: #f8f9fa;
-  border: 1px solid #dee2e6;
+  background: var(--card-bg, #f8f9fa);
+  border: 1px solid var(--card-shadow, #dee2e6);
   border-radius: 8px;
   padding: 20px;
   text-align: center;
@@ -18,12 +19,12 @@
 .stat-number {
   font-size: 3em;
   font-weight: bold;
-  color: #007bff;
+  color: var(--prompt-info-icon-color, #007bff);
   margin: 10px 0;
 }
 
 .stat-label {
-  color: #6c757d;
+  color: var(--text-muted-color, #6c757d);
   font-size: 0.9em;
 }
 
@@ -41,15 +42,15 @@
 }
 
 .alert-success {
-  color: #155724;
-  background-color: #d4edda;
-  border-color: #c3e6cb;
+  color: var(--prompt-success-text, #155724);
+  background-color: var(--prompt-success-bg, #d4edda);
+  border-color: var(--prompt-success-border, #c3e6cb);
 }
 
 .alert-danger {
-  color: #721c24;
-  background-color: #f8d7da;
-  border-color: #f5c6cb;
+  color: var(--prompt-danger-text, #721c24);
+  background-color: var(--prompt-danger-bg, #f8d7da);
+  border-color: var(--prompt-danger-border, #f5c6cb);
 }
 
 /*.btn {*/
@@ -70,9 +71,9 @@
 /*}*/
 
 .btn-primary {
-  color: var(--highlighter-rouge-color);
-  background-color: var(--prompt-info-icon-color);
-  border-color: var(--prompt-info-bg);
+  color: var(--prompt-text-color, #007bff);
+  background-color: var(--prompt-info-bg, #007bff);
+  border-color: var(--prompt-info-bg, #007bff);
 }
 
 .btn-primary:hover {
@@ -119,18 +120,18 @@
   padding: 0.375rem 0.75rem;
   font-size: 1rem;
   line-height: 1.5;
-  color: #495057;
-  background-color: #fff;
+  color: var(--text-color, #495057);
+  background-color: var(--input-bg, #fff);
   background-clip: padding-box;
-  border: 1px solid #ced4da;
+  border: 1px solid var(--input-border, #ced4da);
   border-radius: 0.25rem;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
 .form-control:focus {
-  color: #495057;
-  background-color: #fff;
-  border-color: #80bdff;
+  color: var(--text-color, #495057);
+  background-color: var(--input-bg, #fff);
+  border-color: var(--input-focus-border, #80bdff);
   outline: 0;
   box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
@@ -158,8 +159,8 @@
 }
 
 .endorsement-widget {
-  background: #f8f9fa;
-  border: 1px solid #dee2e6;
+  background: var(--card-bg, #f8f9fa);
+  border: 1px solid var(--card-shadow, #dee2e6);
   border-radius: 8px;
   padding: 20px;
   margin: 20px 0;
@@ -172,10 +173,141 @@
 .endorsement-count {
   font-size: 1.5em;
   font-weight: bold;
-  color: #007bff;
+  color: var(--prompt-info-icon-color, #007bff);
 }
 
 #remove-btn {
   display: none;
   margin-left: 10px;
+}
+
+/* Proposal Card Styles */
+.proposal-card {
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+  /*display: flex;*/
+  /*flex-direction: column;*/
+}
+
+/*.proposal-card .post-preview {*/
+/*  flex: 0 0 auto;*/
+/*}*/
+
+.proposal-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.25rem;
+  background: var(--card-bg, #f8f9fa);
+  border-top: 1px solid var(--card-shadow, #dee2e6);
+  /*margin-top: 0;*/
+  /*flex: 0 0 auto;*/
+  /*position: relative;*/
+  /*z-index: 10;*/
+}
+
+.endorsement-stats {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-muted-color, #6c757d);
+  font-size: 0.9rem;
+}
+
+.endorsement-count-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.75rem;
+  background: var(--highlight-bg-color, #e9ecef);
+  border-radius: 1rem;
+  font-weight: 600;
+  color: var(--text-muted-color, #6c757d);
+}
+
+.endorsement-count-badge i {
+  color: var(--prompt-info-icon-color, #007bff);
+}
+
+.count-number {
+  color: inherit;
+}
+
+.endorsement-label {
+  font-size: 0.85rem;
+}
+
+.endorsement-actions {
+  display: flex;
+  gap: 0.5rem;
+  z-index: 10;
+}
+
+.btn-endorse {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.25rem;
+  font-size: 0.9rem;
+  text-decoration: none;
+  border-radius: 0.375rem;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-endorse:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  text-decoration: none;
+}
+
+.btn-endorse i {
+  font-size: 0.95em;
+}
+
+/* Dark mode adjustments */
+@media (prefers-color-scheme: dark) {
+  .proposal-card-footer {
+    background: var(--card-bg, #2a2a2a);
+    border-top-color: var(--card-shadow, #404040);
+  }
+}
+
+/* Proposal Resources in Panel */
+.proposal-resources {
+  margin-bottom: 1.5rem;
+}
+
+.proposal-resources .panel-heading {
+  margin-bottom: 0.75rem;
+}
+
+.proposal-resources .nav {
+  padding-left: 0;
+}
+
+.proposal-resources .nav-item {
+  margin-bottom: 0.25rem;
+}
+
+.proposal-resources .nav-link {
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--sidebar-active-color);
+  transition: background-color 0.2s ease;
+}
+
+.proposal-resources .nav-link:hover {
+  background-color: var(--sidebar-hover-bg);
+}
+
+.proposal-resources .nav-link i {
+  opacity: 0.8;
+}
+
+.proposal-resources .nav-link span {
+  font-size: 0.9rem;
 }

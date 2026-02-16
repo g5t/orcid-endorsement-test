@@ -4,6 +4,7 @@ title: "Proposal: Open Data Standards for Neutron Scattering"
 date: 2026-02-12 11:00:00 +0000
 categories: proposals data-standards
 proposal_id: open-data-standards-2026
+comments: true
 ---
 
 ## Executive Summary

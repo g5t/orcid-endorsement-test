@@ -2,8 +2,8 @@
 layout: page
 title: My Endorsements
 permalink: /my-endorsements/
-order: 3
 icon: fa-solid fa-person-circle-check
+hidden: true
 ---
 
 <link rel="stylesheet" href="{{ '/assets/css/endorsement.css' | relative_url }}">

@@ -1,0 +1,65 @@
+<!-- Proposal Navigation -->
+<link rel="stylesheet" href="{{ '/assets/css/endorsement.css' | relative_url }}">
+
+<section class="proposal-resources">
+  <h2 class="panel-heading">Proposal Resources</h2>
+  <nav>
+    <ul class="nav flex-column">
+      <li class="nav-item">
+        <a href="{{ '/proposal/how_to/' | relative_url }}" class="nav-link">
+          <i class="fa-solid fa-list-ol fa-fw"></i>
+          <span>How to Endorse</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="{{ '/my-endorsements/' | relative_url }}" class="nav-link">
+          <i class="fa-solid fa-person-circle-check fa-fw"></i>
+          <span>My Endorsements</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+</section>
+
+<!-- Get 5 last posted/updated proposals -->
+
+{% assign proposals = site.proposals
+  | where_exp: 'item', 'item.hidden != true'
+  | where_exp: 'item', 'item.date <= site.time' %}
+
+{% assign update_from = site.time | date: '%s' | minus: 2592000 %}
+
+{% assign recent_proposals = '' | split: '' %}
+
+{% for proposal in proposals %}
+  {% if proposal.seo.date_modified %}
+    {% assign mod_date = proposal.seo.date_modified | date: '%s' %}
+  {% elsif proposal.last_modified_at %}
+    {% assign mod_date = proposal.last_modified_at | date: '%s' %}
+  {% else %}
+    {% assign mod_date = proposal.date | date: '%s' %}
+  {% endif %}
+
+  {% assign mod_date_num = mod_date | plus: 0 %}
+  {% assign update_from_num = update_from | plus: 0 %}
+  
+  {% if mod_date_num >= update_from_num %}
+    {% assign recent_proposals = recent_proposals | push: proposal %}
+  {% endif %}
+{% endfor %}
+
+{% assign recent_proposals = recent_proposals | sort: 'date' | reverse %}
+
+{% if recent_proposals.size > 0 %}
+  <section id="access-lastmod">
+    <h2 class="panel-heading">Recently Updated</h2>
+    <ul class="content list-unstyled ps-0 pb-1 ms-1 mt-2">
+      {% for proposal in recent_proposals limit: 5 %}
+        <li class="text-truncate lh-lg">
+          <a href="{{ proposal.url | relative_url }}">{{ proposal.title }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+  </section>
+  <!-- #access-lastmod -->
+{% endif %}

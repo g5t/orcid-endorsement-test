@@ -1,0 +1,112 @@
+{% comment %}
+  Proposal Card Component
+  Usage: {% include proposal-card.html proposal=proposal %}
+{% endcomment %}
+
+{% assign prop = include.proposal %}
+{% assign prop_id = prop.url | replace: '/proposal/', '' | replace: '/', '' %}
+
+<article class="card-wrapper card proposal-card" data-proposal-id="{{ prop_id }}">
+  <a href="{{ prop.url | relative_url }}" class="post-preview row g-0 flex-md-row-reverse" style="border-radius: 0">
+    {% assign card_body_col = '12' %}
+
+    {% if prop.image %}
+      {% assign src = prop.image.path | default: prop.image %}
+      {% unless src contains '//' %}
+        {% assign src = prop.img_path | append: '/' | append: src | replace: '//', '/' %}
+      {% endunless %}
+      {% assign alt = prop.image.alt | xml_escape | default: 'Preview Image' %}
+      {% assign lqip = null %}
+      {% if prop.image.lqip %}
+        {% capture lqip %}lqip="{{ prop.image.lqip }}"{% endcapture %}
+      {% endif %}
+
+      <div class="col-md-5">
+        <img src="{{ src }}" alt="{{ alt }}" {{ lqip }}>
+      </div>
+
+      {% assign card_body_col = '7' %}
+    {% endif %}
+
+    <div class="col-md-{{ card_body_col }}">
+      <div class="card-body d-flex flex-column">
+        <h1 class="card-title my-2 mt-md-0">{{ prop.title }}</h1>
+
+        <div class="card-text content mt-0 mb-3">
+          <p>
+            {% include no-linenos.html content=prop.content %}
+            {{ content | markdownify | strip_html | truncate: 200 | escape }}
+          </p>
+        </div>
+
+        <div class="post-meta flex-grow-1 d-flex align-items-end">
+          <div class="me-auto">
+            {% if prop.date %}
+              <i class="far fa-calendar fa-fw me-1"></i>
+              {% include datetime.html date=prop.date lang=lang %}
+            {% endif %}
+
+            {% if prop.categories and prop.categories.size > 0 %}
+              <i class="far fa-folder-open fa-fw me-1"></i>
+              <span class="categories">
+                {% for category in prop.categories %}
+                  {{ category }}
+                  {%- unless forloop.last -%},{%- endunless -%}
+                {% endfor %}
+              </span>
+            {% endif %}
+          </div>
+
+          {% if prop.pin %}
+            <div class="pin ms-1">
+              <i class="fas fa-thumbtack fa-fw"></i>
+              <span>{{ site.data.locales[lang].post.pin_prompt }}</span>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </a>
+
+  <!-- Endorsement Actions -->
+  <div class="proposal-card-footer">
+    <div class="endorsement-stats">
+      <span class="endorsement-count-badge" id="count-{{ prop_id }}">
+        <i class="fas fa-users fa-fw"></i>
+        <span class="count-number">...</span>
+      </span>
+      <span class="endorsement-label">endorsements</span>
+    </div>
+    <div class="endorsement-actions">
+      <a href="{{ '/endorsement/' | relative_url }}?proposal={{ prop_id }}" 
+         class="btn btn-primary btn-endorse"
+         onclick="event.stopPropagation();">
+        <i class="fas fa-thumbs-up fa-fw"></i>
+        Endorse
+      </a>
+    </div>
+  </div>
+</article>
+
+<script>
+(function() {
+  const proposalId = '{{ prop_id }}';
+  const workerUrl = 'https://orcid-endorsement-worker-production.excitations-org.workers.dev';
+  
+  fetch(`${workerUrl}/api/stats?proposal_id=${proposalId}`)
+    .then(response => response.json())
+    .then(data => {
+      const countElement = document.querySelector('#count-' + proposalId + ' .count-number');
+      if (countElement && data.total !== undefined) {
+        countElement.textContent = data.total;
+      }
+    })
+    .catch(error => {
+      console.error('Failed to load endorsement count for ' + proposalId + ':', error);
+      const countElement = document.querySelector('#count-' + proposalId + ' .count-number');
+      if (countElement) {
+        countElement.textContent = '0';
+      }
+    });
+})();
+</script>
