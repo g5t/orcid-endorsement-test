@@ -73,7 +73,17 @@ document.addEventListener('DOMContentLoaded', () => {
   loadStats();
 
   // Set up event listeners
-  document.getElementById('sign-in-btn')?.addEventListener('click', () => startOAuth(proposalId));
+  const preAuthConsent = document.getElementById('pre-auth-consent');
+  const signInBtn = document.getElementById('sign-in-btn');
+  
+  // Enable sign-in button when consent checkbox is checked
+  if (preAuthConsent && signInBtn) {
+    preAuthConsent.addEventListener('change', function() {
+      signInBtn.disabled = !this.checked;
+    });
+  }
+  
+  signInBtn?.addEventListener('click', () => startOAuth(proposalId));
   document.getElementById('endorse-form')?.addEventListener('submit', submitEndorsement);
   document.getElementById('remove-btn')?.addEventListener('click', removeEndorsement);
 });
@@ -84,9 +94,16 @@ document.addEventListener('DOMContentLoaded', () => {
 function displayProposalInfo() {
   const proposalInfo = document.getElementById('proposal-info');
   if (proposalInfo) {
+    const proposalUrl = window.location.origin + window.location.pathname.replace(/endorsement\/$/, 'proposal/') + proposalId + '/';
     proposalInfo.innerHTML = `
-      <div class="alert alert-info">
-        <strong>Proposal:</strong> ${formatProposalId(proposalId)}
+      <div class="proposal-info-box">
+        <div class="proposal-info-content">
+          <strong>Endorsing:</strong> 
+          <a href="${proposalUrl}" class="proposal-link">${formatProposalId(proposalId)}</a>
+        </div>
+        <div class="stats-inline" id="stats-inline">
+          <span class="stat-loading">Loading...</span>
+        </div>
       </div>
     `;
   }
@@ -295,18 +312,28 @@ async function loadStats() {
     const response = await fetch(`${WORKER_URL}/api/stats?proposal_id=${proposalId}`);
     const data = await response.json();
 
-    const statsDiv = document.getElementById('stats');
-    if (statsDiv && data.total !== undefined) {
-      statsDiv.innerHTML = `
-        <div class="stats-box">
-          <h3>Endorsements</h3>
-          <p class="stat-number">${data.total}</p>
-          <p class="stat-label">Total endorsements for this proposal</p>
-        </div>
+    // Update inline stats in proposal info box
+    const statsInline = document.getElementById('stats-inline');
+    if (statsInline && data.total !== undefined) {
+      statsInline.innerHTML = `
+        <span class="stat-badge">
+          <span class="stat-number">${data.total}</span> 
+          <span class="stat-label">Endorsement${data.total !== 1 ? 's' : ''}</span>
+        </span>
       `;
+    }
+    
+    // Also update the old stats div if it exists (for backwards compatibility)
+    const statsDiv = document.getElementById('stats');
+    if (statsDiv) {
+      statsDiv.style.display = 'none';
     }
   } catch (error) {
     console.error('Failed to load stats:', error);
+    const statsInline = document.getElementById('stats-inline');
+    if (statsInline) {
+      statsInline.innerHTML = '<span class="stat-error">—</span>';
+    }
   }
 }
 
