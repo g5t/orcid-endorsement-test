@@ -9,6 +9,11 @@ hidden: true
 <link rel="stylesheet" href="{{ '/assets/css/endorsement.css' | relative_url }}">
 
 <div class="endorsement-container">
+  <div class="alert alert-info">
+    <p><i class="fas fa-info-circle"></i> <strong>Your Data Rights:</strong> You can remove any endorsement at any time before the proposal is submitted. Once a proposal is submitted to a funding agency, your information becomes part of the official application and cannot be removed from that submission.</p>
+    <p class="mb-0"><small>See our <a href="{{ '/privacy/' | relative_url }}">Privacy Policy</a> for more information.</small></p>
+  </div>
+
   <div id="message"></div>
   
   <!-- Authentication Section -->

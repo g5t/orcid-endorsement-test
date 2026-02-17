@@ -28,6 +28,8 @@ permalink: /endorsement/
   <div id="form-section" style="display: none;">
     <div id="user-info"></div>
     
+    {% include gdpr-notice.html %}
+    
     <form id="endorse-form">
       <div class="form-group">
         <label for="job-title">Job Title <span style="color: red;">*</span>:</label>
@@ -37,6 +39,13 @@ permalink: /endorsement/
       <div class="form-group">
         <label for="employer">Employer/Institution <span style="color: red;">*</span>:</label>
         <input type="text" id="employer" class="form-control" placeholder="e.g., Example University" required>
+      </div>
+
+      <div class="form-group">
+        <label>
+          <input type="checkbox" id="gdpr-consent" required>
+          I have read and agree to the <a href="{{ '/privacy/' | relative_url }}" target="_blank">Privacy Policy</a> and consent to the collection and use of my data as described. *
+        </label>
       </div>
       
       <button type="submit" class="btn btn-primary">Submit Endorsement</button>
